@@ -141,3 +141,8 @@
 /Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/obj/Debug/net8.0/ServProfesionales.pdb
 /Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/obj/Debug/net8.0/ServProfesionales.genruntimeconfig.cache
 /Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/obj/Debug/net8.0/ref/ServProfesionales.dll
+/Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/obj/Debug/net8.0/ServProfesionales.sourcelink.json
+/Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/nicolassabogal/RiderProjects/ServProfesionales/ServProfesionales/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll

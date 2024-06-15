@@ -12,8 +12,8 @@ using ServProfesionales;
 namespace ServProfesionales.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240604130703_initialSetup")]
-    partial class initialSetup
+    [Migration("20240615131533_correcciondb")]
+    partial class correcciondb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,48 +231,28 @@ namespace ServProfesionales.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("EndingDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("EndingDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfessionalId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("StartingDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("startingDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppointmentId");
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("ProfessionalId");
-
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("ServProfesionales.Entities.Client", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("ServProfesionales.Entities.Professional", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ProfessionalId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -330,7 +310,7 @@ namespace ServProfesionales.Migrations
                     b.Property<string>("ServicesOffer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProfessionalId");
 
                     b.ToTable("Professionals");
                 });
@@ -345,17 +325,22 @@ namespace ServProfesionales.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EndingDate")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProfessionalId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("startingDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ServiceId");
 
@@ -364,9 +349,25 @@ namespace ServProfesionales.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("ProfessionalId");
-
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("ServProfesionales.Models.Client", b =>
+                {
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ClientId");
+
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -422,13 +423,9 @@ namespace ServProfesionales.Migrations
 
             modelBuilder.Entity("ServProfesionales.Entities.Appointment", b =>
                 {
-                    b.HasOne("ServProfesionales.Entities.Client", "Client")
-                        .WithMany("Appointments")
+                    b.HasOne("ServProfesionales.Models.Client", "Client")
+                        .WithMany()
                         .HasForeignKey("ClientId");
-
-                    b.HasOne("ServProfesionales.Entities.Professional", null)
-                        .WithMany("Appointments")
-                        .HasForeignKey("ProfessionalId");
 
                     b.Navigation("Client");
                 });
@@ -441,15 +438,9 @@ namespace ServProfesionales.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServProfesionales.Entities.Client", "Client")
-                        .WithMany("Services")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServProfesionales.Entities.Professional", null)
-                        .WithMany("Services")
-                        .HasForeignKey("ProfessionalId");
+                    b.HasOne("ServProfesionales.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
 
                     b.Navigation("Appointment");
 
@@ -458,22 +449,7 @@ namespace ServProfesionales.Migrations
 
             modelBuilder.Entity("ServProfesionales.Entities.Appointment", b =>
                 {
-                    b.Navigation("Service")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ServProfesionales.Entities.Client", b =>
-                {
-                    b.Navigation("Appointments");
-
-                    b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("ServProfesionales.Entities.Professional", b =>
-                {
-                    b.Navigation("Appointments");
-
-                    b.Navigation("Services");
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }

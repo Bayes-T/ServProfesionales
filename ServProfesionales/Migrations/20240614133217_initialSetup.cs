@@ -51,24 +51,23 @@ namespace ServProfesionales.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clients",
+                name: "Client",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.PrimaryKey("PK_Client", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Professionals",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProfessionalId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ServicesOffer = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -89,7 +88,7 @@ namespace ServProfesionales.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Professionals", x => x.Id);
+                    table.PrimaryKey("PK_Professionals", x => x.ProfessionalId);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,21 +205,22 @@ namespace ServProfesionales.Migrations
                     startingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProfessionalId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ProfessionalId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
                     table.ForeignKey(
-                        name: "FK_Appointments_Clients_ClientId",
+                        name: "FK_Appointments_Client_ClientId",
                         column: x => x.ClientId,
-                        principalTable: "Clients",
+                        principalTable: "Client",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Appointments_Professionals_ProfessionalId",
                         column: x => x.ProfessionalId,
                         principalTable: "Professionals",
-                        principalColumn: "Id");
+                        principalColumn: "ProfessionalId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,7 +230,7 @@ namespace ServProfesionales.Migrations
                     ServiceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AppointmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProfessionalId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -244,16 +244,15 @@ namespace ServProfesionales.Migrations
                         principalColumn: "AppointmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Services_Clients_ClientId",
+                        name: "FK_Services_Client_ClientId",
                         column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Client",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Services_Professionals_ProfessionalId",
                         column: x => x.ProfessionalId,
                         principalTable: "Professionals",
-                        principalColumn: "Id");
+                        principalColumn: "ProfessionalId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -353,7 +352,7 @@ namespace ServProfesionales.Migrations
                 name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Client");
 
             migrationBuilder.DropTable(
                 name: "Professionals");

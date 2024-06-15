@@ -5,7 +5,7 @@ namespace ServProfesionales.Entities;
 
 public class Professional
 {
-    public string Id { get; set; }
+    public string ProfessionalId { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public string? ServicesOffer { get; set; }
@@ -24,10 +24,5 @@ public class Professional
     public string? Package2Hours { get; set; }
     public string? Package2Price { get; set; }
     public bool? NegotiatePrice { get; set; }
-    
-    //relacion cliente, es redundante, solo hay un profesional
-
-    public List<Service> Services { get; set; }
-    public List<Appointment> Appointments { get; set; }
 }
 
