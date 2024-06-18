@@ -14,9 +14,8 @@ public class Professional
     public string Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? LinkedinURL { get; set; }
-    public string PersonalWeb { get; set; }
 
-    public string PriceHour { get; set; }
+    public string HourPrice { get; set; }
     public bool? Offer1 { get; set; }
     public string? Package1Hours { get; set; }
     public string? Package1Price { get; set; }

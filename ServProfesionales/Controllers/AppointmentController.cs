@@ -5,7 +5,6 @@ using ServProfesionales.Entities;
 using ServProfesionales.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-
 namespace ServProfesionales.Controllers;
 
 [ApiController]
@@ -42,11 +41,10 @@ public class AppointmentController: ControllerBase
 
         return appointmentsDtos;
     }
-
-    [HttpGet("/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<AppointmentDTO>> GetById(string id)
     {
-        var appointment = await _dbContext.Appointments.FirstOrDefaultAsync(x => x.AppointmentId == id);
+        var appointment = await _dbContext.Appointments.Include(x => x.Client).FirstOrDefaultAsync(x => x.AppointmentId == id);
         
         if (appointment == null)
         {
@@ -90,7 +88,20 @@ public class AppointmentController: ControllerBase
             EndingDate = postAppointmentDto.EndingDate,
             Client = client
         };
+
+        var service = new Service()
+        {
+            ServiceId = Guid.NewGuid().ToString(),
+            Title = $"{postAppointmentDto.Title} service",
+            StartingDate = postAppointmentDto.StartingDate,
+            EndingDate = postAppointmentDto.EndingDate,
+            Client = client,
+            AppointmentId = postAppointmentDto.AppointmentId,
+            Appointment = appointment,
+            State = ServiceEnum.Agendada
+        };
         
+
         _dbContext.Add(appointment);
         await _dbContext.SaveChangesAsync();
         return Ok();
@@ -104,7 +115,7 @@ public class AppointmentController: ControllerBase
             return BadRequest();
         }
 
-        var appointment = await _dbContext.Appointments.FirstOrDefaultAsync(x => x.AppointmentId == id);
+        var appointment = await _dbContext.Appointments.Include(x => x.Client).FirstOrDefaultAsync(x => x.AppointmentId == id);
 
         if (appointment == null)
         {
